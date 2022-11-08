@@ -5,13 +5,14 @@ import { ContactsItem } from './ContactItem/ContactItem';
 export const ContactsList = ({contacts, onDeleteContact}) => {
     return (
         <Box as="ul">
-            {contacts.map(({name, number, id}) => (
+            {contacts.map(({ name, number, id }) => {
+                return (
                 <ContactsItem key={id}
-                    id={id} 
-                    name={name} 
-                    number={number} 
-                    onDeleteContact={onDeleteContact}/>
-            ))}
+                    id={id}
+                    name={name}
+                    number={number}
+                    onDeleteContact={onDeleteContact} />
+            )})}
         </Box>
     )
 };

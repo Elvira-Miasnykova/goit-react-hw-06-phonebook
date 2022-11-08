@@ -32,9 +32,11 @@ export function Form({onSubmit}) {
             number: e.currentTarget.number.value,
             id: nanoid(),
         };
-        onSubmit(newContact);
         setName('');
         setNumber('');
+        onSubmit(newContact);
+        console.log(newContact);
+        
 
     };
 

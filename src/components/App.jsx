@@ -8,11 +8,12 @@ import { Box } from './Box';
 import { useDispatch, useSelector } from "react-redux";
 import { addContact, handleDelete } from "redux/contactsSlice";
 import {setFilter} from "redux/filterSlice";
+import { ContactsItem } from './Contacts/ContactItem/ContactItem';
 
 
 export function App() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.array);
   const filter = useSelector(state => state.filter);
 
   // const [filter, setFilter] = useState('');
@@ -30,26 +31,31 @@ export function App() {
     (foundContact)
       ? window.alert(`${newContact.name} is alredy in contacts`)
       : dispatch(addContact(newContact))
-    console.log(newContact);
+    console.log(addContact(newContact));
   };
 
   const contactDelete = (contactId) => {
     dispatch(handleDelete(contactId))};
 
-  const changeFilter = (e) => {
-    dispatch(setFilter(e.currentTarget.value))
-  };
+  
 
   const getVisibleContacts = () => {
     const normalizedFilter = filter.toLocaleLowerCase();
-    return (
-      contacts.filter(contact => 
-        contact.name.toLocaleLowerCase().includes(normalizedFilter))
-    )
+    //console.log('normalizedFilter',normalizedFilter);
+    return contacts.filter(contact => (contact.name.toLocaleLowerCase().includes(normalizedFilter)))
+    
   };
 
+  ///////// З visibleContacts не працює, що я не так роблю
+
+  const visibleContacts = getVisibleContacts();
+
+  const changeFilter = (e) => {
+    dispatch(setFilter(e.currentTarget.value))
+    console.log('setFilter', setFilter(e.currentTarget.value));
+  };
   
-    const visibleContacts = getVisibleContacts();
+  
 
     return (
       <Box bg="muted" p={3} border="normal" borderColor="lightGray" borderRadius="normal" width="25%"  boxShadow="0px 1px 1px rgba(0, 0, 0, 0.12), 0px 4px 4px rgba(0, 0, 0, 0.06),
@@ -58,7 +64,21 @@ export function App() {
         <Form onSubmit={addNewContact}/>
         <Title>Contacts</Title>
         <Filter value={filter} onChange={changeFilter}/>
-        <ContactsList contacts={visibleContacts} onDeleteContact={contactDelete} />
+        {/* <ContactsList contacts={visibleContacts} onDeleteContact={contactDelete} /> */}
+        {contacts.length === 0 ? (
+        <h3>Please, add new contact</h3>
+      ) : (
+        <Box as="ul">
+            {contacts.map(({ name, number, id }) => {
+                return (
+                <ContactsItem key={id}
+                    id={id}
+                    name={name}
+                    number={number}
+                    onDeleteContact={contactDelete} />
+            )})}
+        </Box>
+      )}
       </Box>
     )
   
