@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { nanoid } from 'nanoid';
 import { Box } from "../Box";
 import { LabelStyled, InputStyled, ButtonStyled } from "./Form.styled";
@@ -6,6 +7,7 @@ import { LabelStyled, InputStyled, ButtonStyled } from "./Form.styled";
 export function Form({onSubmit}) { 
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
+    
     
     const handleChange = (e) => {
         const { name, value } = e.currentTarget;
@@ -22,6 +24,7 @@ export function Form({onSubmit}) {
         
     };
 
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         const newContact = {
@@ -35,6 +38,7 @@ export function Form({onSubmit}) {
 
     };
 
+    
     
         return (
             <Box as="form" onSubmit={handleSubmit} bg="muted"  border="normal" borderRadius="normal" borderColor="accent" display="block" p={3} mb={3} >
