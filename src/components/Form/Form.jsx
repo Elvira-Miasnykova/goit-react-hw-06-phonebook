@@ -3,11 +3,15 @@ import { useState } from "react";
 import { nanoid } from 'nanoid';
 import { Box } from "../Box";
 import { LabelStyled, InputStyled, ButtonStyled } from "./Form.styled";
+import { useDispatch, useSelector } from "react-redux";
+import { addContact } from "redux/contactsSlice";
 
-export function Form({onSubmit}) { 
+export function Form() { 
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     
+    const dispatch = useDispatch();
+    const contacts = useSelector(state => state.contacts.array);
     
     const handleChange = (e) => {
         const { name, value } = e.currentTarget;
@@ -24,6 +28,14 @@ export function Form({onSubmit}) {
         
     };
 
+    const addNewContact = (newContact) => {
+    const foundContact = contacts.find(contact => contact.name === newContact.name);
+    
+    (foundContact)
+      ? window.alert(`${newContact.name} is alredy in contacts`)
+      : dispatch(addContact(newContact))
+    console.log(addContact(newContact));
+  };
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,7 +46,7 @@ export function Form({onSubmit}) {
         };
         setName('');
         setNumber('');
-        onSubmit(newContact);
+        addNewContact({name: name, number: number});
         console.log(newContact);
         
 
